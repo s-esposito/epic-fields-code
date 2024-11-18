@@ -15,7 +15,7 @@ def parse_args():
                         help='Path to the sparsely reconstructed models.')
     parser.add_argument('--dense_reconstuctions_root', type=str, default='colmap_models/dense',
                         help='Path to the densely registered models.')
-    parser.add_argument('--epic_kithens_root', type=str, default='.',
+    parser.add_argument('--root_dir', type=str, default='.',
                         help='Path to epic kitchens images.')
     parser.add_argument('--logs_path', type=str, default='logs/dense/out_logs_terminal',
                         help='Path to store the log files.')
@@ -45,7 +45,7 @@ for video in videos_list:
     pre = video.split('_')[0]
     if (not os.path.exists(os.path.join(args.dense_reconstuctions_root, '%s' % video))):
         # check the number of images in this video
-        num_lines = len(glob.glob(os.path.join(args.epic_kithens_root,pre,video,'*.jpg')))
+        num_lines = len(glob.glob(os.path.join(args.root_dir,pre,video,'*.jpg')))
 
         print('Processing: ', video, '(',num_lines, 'images )')
         start_time = time.time()
@@ -62,7 +62,7 @@ for video in videos_list:
 
 
         # Define the command to execute the script
-        command = ["bash", script_copy_path, video,args.sparse_reconstuctions_root,args.dense_reconstuctions_root,args.epic_kithens_root,args.summary_path,str(gpu_index)]
+        command = ["bash", script_copy_path, video,args.sparse_reconstuctions_root,args.dense_reconstuctions_root,args.root_dir,args.summary_path,str(gpu_index)]
         # Open the output file in write mode
         with open(output_file_path, 'w') as output_file:
             # Run the command and capture its output in real time

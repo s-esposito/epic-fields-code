@@ -13,7 +13,7 @@ def parse_args():
                         help='A file with list of vidoes to be processed in all stages')
     parser.add_argument('--sparse_reconstuctions_root', type=str, default='colmap_models/sparse',
                         help='Path to the sparsely reconstructed models.')
-    parser.add_argument('--epic_kithens_root', type=str, default='.',
+    parser.add_argument('--root_dir', type=str, default='.',
                         help='Path to epic kitchens images.')
     parser.add_argument('--logs_path', type=str, default='logs/sparse/out_logs_terminal',
                         help='Path to store the log files.')
@@ -63,7 +63,7 @@ for video in videos_list:
 
 
             # Define the command to execute the script
-            command = ["bash", script_copy_path, video,args.sparse_reconstuctions_root,args.epic_kithens_root,args.sampled_images_path,args.summary_path,str(gpu_index)]
+            command = ["bash", script_copy_path, video,args.sparse_reconstuctions_root,args.root_dir,args.sampled_images_path,args.summary_path,str(gpu_index)]
             # Open the output file in write mode
             with open(output_file_path, 'w') as output_file:
                 # Run the command and capture its output in real time

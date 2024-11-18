@@ -4,12 +4,15 @@ import glob
 import os
 import argparse
 from utils.lib import *
+from pathlib import Path
+from config import datasets_path
+
 # Function to parse command-line arguments
 def parse_args():
     parser = argparse.ArgumentParser(description='COLMAP Reconstruction Script')
     parser.add_argument('--input_videos', type=str, default='input_videos.txt',
                         help='A file with list of vidoes to be processed in all stages')
-    parser.add_argument('--epic_kithens_root', type=str, default='.',
+    parser.add_argument('--root_dir', type=str, default='.',
                         help='Path to epic kitchens images.')
     parser.add_argument('--sampled_images_path', type=str, default='sampled_frames',
                         help='Path to the directory containing sampled image files.')
@@ -26,7 +29,8 @@ def main():
     args = parse_args()
 
     videos = read_lines_from_file(args.input_videos)
-    epic_root = args.epic_kithens_root
+    epic_root = args.root_dir
+    epic_root = datasets_path / Path(epic_root)
     params_list = []
     for video in videos:
         video_pre = video.split('_')[0]

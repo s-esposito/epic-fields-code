@@ -121,12 +121,14 @@ cd vocab_bins
 wget https://demuc.de/colmap/vocab_tree_flickr100K_words32K.bin
 cd ..
 ```
-#### 4. Installing `pycolmap` package
+#### 4. Installing required packages
 
-The `pycolmap` package will be used to gather statistics from the model later on. Install it using `pip` (assuming that you've created an environment):
+Install it using `pip` (assuming that you've created an environment).
+
+The `pycolmap` package will be used to gather statistics from the model later on.
 
 ```bash
-pip install pycolmap
+pip install -r requirements.txt
 ```
 ### Step 1: Downloading Video Frames
 
@@ -189,7 +191,7 @@ Execute the `select_sparse_frames.py` script to perform homography-based samplin
 ##### Script Parameters:
 
 - `--input_videos`: Path to the file containing a list of videos to be processed. Default: `input_videos.txt`
-- `--epic_kithens_root`: Directory path to the EPIC-KITCHENS images. Default: `.`
+- `--root_dir`: Directory path to the EPIC-KITCHENS images. Default: `.`
 - `--sampled_images_path`: Directory where the sampled image files will be stored. Default: `sampled_frames`
 - `--homography_overlap`: Threshold for the homography to sample new frames. A higher value will sample more images. Default: `0.9`
 - `--max_concurrent`: Maximum number of concurrent processes. Default: `8`
@@ -197,7 +199,7 @@ Execute the `select_sparse_frames.py` script to perform homography-based samplin
 ##### Example Usage:
 
 ```bash
-python3 select_sparse_frames.py --input_videos input_videos.txt --epic_kithens_root path_to_epic_images --sampled_images_path path_for_sampled_frames
+python3 select_sparse_frames.py --input_videos input_videos.txt --root_dir path_to_epic_images --sampled_images_path path_for_sampled_frames
 ```
 
 ##### Demo: Homography-Based Frame Sampling for `P15_12` Video
@@ -205,7 +207,7 @@ python3 select_sparse_frames.py --input_videos input_videos.txt --epic_kithens_r
 For the demo, using the `P15_12` video you've downloaded into the current directory, run:
 
 ```bash
-python3 select_sparse_frames.py --input_videos input_videos.txt --epic_kithens_root . --sampled_images_path sampled_frames --homography_overlap 0.9 --max_concurrent 8
+python3 select_sparse_frames.py --input_videos input_videos.txt --root_dir . --sampled_images_path sampled_frames --homography_overlap 0.9 --max_concurrent 8
 ```
 
 
@@ -217,7 +219,7 @@ Execute the `reconstruct_sparse.py` script to perform sparse reconstruction usin
 
 - `--input_videos`: Path to the file containing a list of videos to be processed. Default: `input_videos.txt`
 - `--sparse_reconstuctions_root`: Path to store the sparsely reconstructed models. Default: `colmap_models/sparse`
-- `--epic_kithens_root`: Directory path to the EPIC-KITCHENS images. Default: `.`
+- `--root_dir`: Directory path to the EPIC-KITCHENS images. Default: `.`
 - `--logs_path`: Path where the log files will be stored. Default: `logs/sparse/out_logs_terminal`
 - `--summary_path`: Path where the summary files will be stored. Default: `logs/sparse/out_summary`
 - `--sampled_images_path`: Directory where the sampled image files are located. Default: `sampled_frames`
@@ -225,14 +227,14 @@ Execute the `reconstruct_sparse.py` script to perform sparse reconstruction usin
 
 ##### Example Usage:
 ```bash
-python3 reconstruct_sparse.py --input_videos input_videos.txt --sparse_reconstuctions_root colmap_models/sparse --epic_kithens_root path_to_epic_images --logs_path logs/sparse/out_logs_terminal --summary_path logs/sparse/out_summary --sampled_images_path path_for_sampled_frames --gpu_index 0
+python3 reconstruct_sparse.py --input_videos input_videos.txt --sparse_reconstuctions_root colmap_models/sparse --root_dir path_to_epic_images --logs_path logs/sparse/out_logs_terminal --summary_path logs/sparse/out_summary --sampled_images_path path_for_sampled_frames --gpu_index 0
 ```
 
 #### Demo: Sparse Reconstruction for P15_12 Video
 For the demo, using the P15_12 video and the sampled frames in the current directory, run:
 
 ```bash
-python3 reconstruct_sparse.py --input_videos input_videos.txt --sparse_reconstuctions_root colmap_models/sparse --epic_kithens_root . --logs_path logs/sparse/out_logs_terminal --summary_path logs/sparse/out_summary --sampled_images_path sampled_frames --gpu_index 0
+python3 reconstruct_sparse.py --input_videos input_videos.txt --sparse_reconstuctions_root colmap_models/sparse --root_dir . --logs_path logs/sparse/out_logs_terminal --summary_path logs/sparse/out_summary --sampled_images_path sampled_frames --gpu_index 0
 ```
 
 ### Understanding the Output File Structure 
@@ -273,7 +275,7 @@ For this step, you'll use the `register_dense.py` script. This script registers 
 - `--input_videos`: Path to the file containing a list of videos to be processed. Default: `input_videos.txt`
 - `--sparse_reconstuctions_root`: Directory path to the sparsely reconstructed models. Default: `colmap_models/sparse`
 - `--dense_reconstuctions_root`: Directory path to the densely registered models. Default: `colmap_models/dense`
-- `--epic_kithens_root`: Directory path to the EPIC-KITCHENS images. Default: `.`
+- `--root_dir`: Directory path to the EPIC-KITCHENS images. Default: `.`
 - `--logs_path`: Directory where the log files of the dense registration will be stored. Default: `logs/dense/out_logs_terminal`
 - `--summary_path`: Directory where the summary files of the dense registration will be stored. Default: `logs/dense/out_summary`
 - `--gpu_index`: Index of the GPU to use. Default: `0`
@@ -283,7 +285,7 @@ For this step, you'll use the `register_dense.py` script. This script registers 
 To demonstrate the registration process using the `register_dense.py` script, let's use the sample video `P15_12` as an example.
 
 ```bash
-python3 register_dense.py --input_videos input_videos.txt --sparse_reconstuctions_root colmap_models/sparse --dense_reconstuctions_root colmap_models/dense --epic_kithens_root . --logs_path logs/dense/out_logs_terminal --summary_path logs/dense/out_summary --gpu_index 0
+python3 register_dense.py --input_videos input_videos.txt --sparse_reconstuctions_root colmap_models/sparse --dense_reconstuctions_root colmap_models/dense --root_dir . --logs_path logs/dense/out_logs_terminal --summary_path logs/dense/out_summary --gpu_index 0
 ```
 
 Assuming input_videos.txt contains the entry for P15_12, the above command will register all frames from the P15_12 video with the sparse model stored under colmap_models/sparse, the new registered model will be saved under colmap_models/dense. The logs and summary for this registration process will be saved under the logs/dense/out_logs_terminal and logs/dense/out_summary directories, respectively.
